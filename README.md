@@ -24,7 +24,7 @@ We recommend you to arrange the project tree as follows.
 
 ```
 home
-├── M-Net  # The cloned CRNet repository
+├── M-Net  # The cloned M-Net repository
 │   ├── dataset
 │   ├── models
 │   ├── utils
@@ -40,57 +40,44 @@ home
 ...
 ```
 
-## Train CRNet from Scratch
+## Train M-Net from Scratch
 
-An example of run.sh is listed below. Simply use it with `sh run.sh`. It will start advanced scheme aided CRNet training from scratch. Change scenario using `--scenario` and change compression ratio with `--cr`.
+An example of run.sh is listed below. Simply use it with `sh run.sh`. It will start advanced scheme aided M-Net training from scratch. Change scenario using `--scenario` and change compression ratio with `--cr`.
 
 ``` bash
-python /home/CRNet/main.py \
+python /home/M-Net/main.py \
   --data-dir '/home/COST2100' \
   --scenario 'in' \
-  --epochs 2500 \
+  --epochs 1000 \
   --batch-size 200 \
   --workers 0 \
   --cr 4 \
   --scheduler cosine \
+  --seed 196 \
+  --expansion 1 \
   --gpu 0 \
   2>&1 | tee log.out
 ```
 
 ## Results and Reproduction
 
-The main results reported in our paper are presented as follows. All the listed results can be found in Table1 of our paper. They are achieved from training CRNet with our advanced training scheme (cosine annealing scheduler with warm up for 2500 epochs).
+The main results reported in our paper are presented as follows. All the listed results can be found in Table1 of our paper, you can easily reproduce the following results.
 
 
-Scenario | Compression Ratio | NMSE | Flops | Checkpoints
+Scenario | Compression Ratio | NMSE | Flops | Parameters
 :--: | :--: | :--: | :--: | :--:
-indoor | 1/4 | -26.99 | 5.12M | in_04.pth
-indoor | 1/8 | -16.01 | 4.07M | in_08.pth
-indoor | 1/16 | -11.35 | 3.55M | in_16.pth
-indoor | 1/32 | -8.93 | 3.28M | in_32.pth
-indoor | 1/64 | -6.49 | 3.16M | in_64.pth
-outdoor | 1/4 | -12.70 | 5.12M | out_04.pth
-outdoor | 1/8 | -8.04 | 4.07M | out_08.pth
-outdoor | 1/16 | -5.44 | 3.55M | out_16.pth
-outdoor | 1/32 | -3.51 | 3.28M | out_32.pth
-outdoor | 1/64 | -2.22 | 3.16M | out_64.pth
+indoor | 1/4 | -31.48 | 3.93M | 2150K
+indoor | 1/8 | -21.00 | 2.88M | 1101K
+indoor | 1/16 | -15.13 | 2.36M | 576K
+indoor | 1/32 | -11.29 | 2.10M | 314K
+indoor | 1/64 | -8.41 | 1.97M | 153K
+outdoor | 1/4 | -11.90 | 3.93M | 2150K
+outdoor | 1/8 | -8.23 | 2.88M | 1101K
+outdoor | 1/16 | -5.67 | 2.36M | 576K
+outdoor | 1/32 | -3.68 | 2.10M | 314K
+outdoor | 1/64 | -2.39 | 1.97M | 153K
 
-As aforementioned, we provide model checkpoints for all the results. Our code library supports easy inference. 
 
-**To reproduce all these results, simple add `--evaluate` to `run.sh` and pick the corresponding pre-trained model with `--pretrained`.** An example is shown as follows.
-
-``` bash
-python /home/CRNet/main.py \
-  --data-dir '/home/COST2100' \
-  --scenario 'in' \
-  --pretrained './checkpoints/in_04' \
-  --evaluate \
-  --batch-size 200 \
-  --workers 0 \
-  --cr 4 \
-  --cpu \
-  2>&1 | tee log.out
-```
 
 ## Acknowledgment
 
